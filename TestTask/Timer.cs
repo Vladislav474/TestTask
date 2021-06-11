@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
+
 
 namespace TestTask
 {
@@ -21,9 +18,10 @@ namespace TestTask
         private TypeTab type;
         private string number;
         private string timeCreate;
-        private string time;
+        private string time = "00:00.00";
         private string text;
 
+        public string visibilityDrop = "Visible";
         public string visibilityStart = "Visible";
         public string visibilityStop = "Hidden";
         public string visibilityContinue = "Hidden";
@@ -40,7 +38,7 @@ namespace TestTask
             get
             {
                 return commandDropTimer ??
-                  (commandDropTimer = new RelayCommand(obj => DropTimer(obj)));
+                  (commandDropTimer = new RelayCommand(obj => DropTimer(obj), (obj) => obj != null));
             }
         }
         public RelayCommand CommandStart
@@ -76,9 +74,11 @@ namespace TestTask
             }
         }
 
-        Stopwatch stopwatch = new Stopwatch();
-        TimerCallback tm = new TimerCallback(SetTimer);
+        readonly Stopwatch stopwatch = new Stopwatch();
+        readonly TimerCallback tm = new TimerCallback(SetTimer);
         Timer timer;
+
+        private bool StatusTimer { get; set; } = false;
         private static int CountTimers { get; set; }
         public string Number
         {
@@ -152,6 +152,15 @@ namespace TestTask
                 OnPropertyChanged("VisibilityReset");
             }
         }
+        public string VisibilityDrop
+        {
+            get { return visibilityDrop; }
+            set
+            {
+                visibilityDrop = value;
+                OnPropertyChanged("VisibilityDrop");
+            }
+        }
         public bool EnableReset
         {
             get { return enableReset; }
@@ -161,7 +170,6 @@ namespace TestTask
                 OnPropertyChanged("EnableReset");
             }
         }
-
         public TypeTab Type
         {
             get { return type; }
@@ -171,13 +179,13 @@ namespace TestTask
                 OnPropertyChanged("Type");
             }
         }
-
         public MyTimer(TypeTab type)
         {
             if (type == TypeTab.Add)
             {
                 Type = type;
                 Text = "+";
+                VisibilityDrop = "Hidden";
             }
             else
             {
@@ -196,12 +204,12 @@ namespace TestTask
 
         public void StartTimer()
         {
-
             stopwatch.Start();
             timer = new Timer(tm, this, 0, 100);
 
             VisibilityStart = "Hidden";
             VisibilityStop = VisibilityReset = "Visible";
+            StatusTimer = true;
         }
         public void ContinueTimer()
         {
@@ -225,18 +233,34 @@ namespace TestTask
 
             VisibilityStart = "Visible";
             VisibilityContinue = VisibilityReset = "Hidden";
+            StatusTimer = false;
         }
         private static void SetTimer(object timer)
         {
             MyTimer myTimer = (MyTimer)timer;
             TimeSpan ts = myTimer.stopwatch.Elapsed;
-            myTimer.Time = String.Format("{0:00}:{1:00}.{2:00}",ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
+            myTimer.Time = String.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
         }
 
         private static void DropTimer(object obj)
         {
-            //ApplicationViewModel.Timers.Remove(ApplicationViewModel.se)
-            
+            if (ApplicationViewModel.Timers.Count == 2) return;
+     
+            int number = Convert.ToInt32(obj);
+            if (ApplicationViewModel.Timers[number - 1].StatusTimer) return;
+
+            try
+            {
+                ApplicationViewModel.Timers.Remove(ApplicationViewModel.Timers[number - 1]);
+            }
+            catch { }
+            finally
+            {
+                for (int i = number - 1; i < ApplicationViewModel.Timers.Count - 1; i++)
+                    ApplicationViewModel.Timers[i].Number = (i + 1).ToString();
+
+                CountTimers = ApplicationViewModel.Timers.Count - 1;
+            }
         }
     }
 }

@@ -1,18 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
+
 
 namespace TestTask
 {
     class ApplicationViewModel
     {
         private const int MAX_COUNT_TIMERS = 10;
+
+        private RelayCommand commandDropTimer;
+        public RelayCommand CommandDropTimer
+        {
+            get
+            {
+                return commandDropTimer ??
+                  (commandDropTimer = new RelayCommand(obj => DropTimer()));
+            }
+        }
 
         public static bool fl = true;
         public string visibilityReset = "Hidden";
@@ -25,13 +31,19 @@ namespace TestTask
                 OnPropertyChanged("VisibilityReset");
             }
         }
-        private static MyTimer selectedTimer;
+        private MyTimer selectedTimer;
         public static ObservableCollection<MyTimer> Timers { get; set; }
         public MyTimer SelectedTimer
         {
             get { return selectedTimer; }
             set
             {
+                if (value == null)
+                {
+                    selectedTimer = Timers[Timers.Count - 2];
+                    OnPropertyChanged("SelectedTimer");
+                }
+                else
                 if (value.Type == TypeTab.Add && fl)
                 {
                     if (Timers.Count == MAX_COUNT_TIMERS + 1) return;
@@ -66,6 +78,10 @@ namespace TestTask
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         }
 
+        public void DropTimer()
+        {
+            Console.WriteLine("F");
+        }
 
     }
 }
