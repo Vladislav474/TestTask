@@ -1,0 +1,15 @@
+C:\Users\mrvla\source\repos\TestTask\TestTask\bin\Debug\TestTask.exe.config
+C:\Users\mrvla\source\repos\TestTask\TestTask\bin\Debug\TestTask.exe
+C:\Users\mrvla\source\repos\TestTask\TestTask\bin\Debug\TestTask.pdb
+C:\Users\mrvla\source\repos\TestTask\TestTask\obj\Debug\TestTask.csprojAssemblyReference.cache
+C:\Users\mrvla\source\repos\TestTask\TestTask\obj\Debug\MainWindow.g.cs
+C:\Users\mrvla\source\repos\TestTask\TestTask\obj\Debug\App.g.cs
+C:\Users\mrvla\source\repos\TestTask\TestTask\obj\Debug\TestTask_MarkupCompile.cache
+C:\Users\mrvla\source\repos\TestTask\TestTask\obj\Debug\TestTask_MarkupCompile.lref
+C:\Users\mrvla\source\repos\TestTask\TestTask\obj\Debug\MainWindow.baml
+C:\Users\mrvla\source\repos\TestTask\TestTask\obj\Debug\TestTask.g.resources
+C:\Users\mrvla\source\repos\TestTask\TestTask\obj\Debug\TestTask.Properties.Resources.resources
+C:\Users\mrvla\source\repos\TestTask\TestTask\obj\Debug\TestTask.csproj.GenerateResource.cache
+C:\Users\mrvla\source\repos\TestTask\TestTask\obj\Debug\TestTask.csproj.CoreCompileInputs.cache
+C:\Users\mrvla\source\repos\TestTask\TestTask\obj\Debug\TestTask.exe
+C:\Users\mrvla\source\repos\TestTask\TestTask\obj\Debug\TestTask.pdb
